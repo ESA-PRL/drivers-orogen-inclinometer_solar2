@@ -1,0 +1,48 @@
+name "inclinometer_solar2"
+version "0.1"
+
+
+using_library "inclinometer_solar2"
+import_types_from "inclinometer_solar2Types.hpp"
+
+import_types_from "std"
+import_types_from "base"
+
+# Declare a new task context (i.e., a component)
+#
+# The corresponding C++ class can be edited in tasks/Task.hpp and
+# tasks/Task.cpp, and will be put in the inclinometer_solar2 namespace.
+task_context "Task" do
+    # This is the default from now on, and should not be removed. Rock will
+    # transition to a setup where all components use a configuration step.
+    needs_configuration
+
+    # A configuration property (here, a std::string). Its value can be retrieved
+    # in the C++ code with # _config_value.get() and _config_value.set(new_value).
+    
+    #***************************
+    #**** Driver Properties ****
+    #***************************
+    property("port", "/std/string", "/dev/ttyUSB0").
+        doc 'the device port'
+
+    property('baudrate', 'int', 38400).
+        doc 'Baud rate to open the serial com_port.'
+
+    property('rate', 'int', 50).
+        doc 'the rate in which the sensor sends messages in streaming mode in [ms]'
+    
+    #******************************
+    #******* Input ports  *********
+    #******************************
+
+    #******************************
+    #******* Output Ports *********
+    #******************************
+    output_port ("inclination", "solar2/Inclination").
+        doc 'Timestamped inclination data'
+
+    fd_driven
+
+end
+
