@@ -39,7 +39,7 @@ task_context "Task" do
     #******************************
     #******* Output Ports *********
     #******************************
-    output_port ("inclination", "solar2/Inclination").
+    output_port ('inclination, 'solar2/Inclination').
         doc 'Timestamped inclination data'
 
     fd_driven
