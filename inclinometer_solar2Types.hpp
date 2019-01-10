@@ -1,14 +1,14 @@
-#ifndef SOLAR2_TYPES_HPP
-#define SOLAR2_TYPES_HPP
+#ifndef INCLINOMETER_SOLAR2_TYPES_HPP
+#define INCLINOMETER_SOLAR2_TYPES_HPP
 
 #include <base/Time.hpp>
 
-namespace solar2 {
-	struct Inclination
+namespace inclinometer_solar2 {
+	struct Inclinations
 	{
 		base::Time time;
-		double x;
-		double y;
+		float x;
+		float y;
 	};
 
 }

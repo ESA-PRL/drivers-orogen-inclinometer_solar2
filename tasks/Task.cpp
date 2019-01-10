@@ -7,15 +7,18 @@ using namespace inclinometer_solar2;
 Task::Task(std::string const& name)
     : TaskBase(name)
 {
+    driver = NULL;
 }
 
 Task::Task(std::string const& name, RTT::ExecutionEngine* engine)
     : TaskBase(name, engine)
 {
+    driver = NULL;
 }
 
 Task::~Task()
 {
+    delete driver;
 }
 
 
@@ -28,17 +31,83 @@ bool Task::configureHook()
 {
     if (! TaskBase::configureHook())
         return false;
+
+    driver = new inclinometer_solar2::Solar2();
+
+    if(!driver->openSerial(_port.value(), _baudrate.value()))
+    // if(!driver->openSerial("/dev/ttyUSB0", 38400))
+    {
+        fprintf(stderr, "Inclination: Cannot initialize driver\n");
+        return false;
+    }
+
     return true;
 }
 bool Task::startHook()
 {
     if (! TaskBase::startHook())
         return false;
+
+    // Mandatory for a FD driven component
+    RTT::extras::FileDescriptorActivity* activity = getActivity<RTT::extras::FileDescriptorActivity>();
+    if(activity)
+    {
+        activity->watch(driver->getFileDescriptor());
+        // Set the timeout to 2 seconds
+        activity->setTimeout(2000);
+    }
+    else
+    {
+        fprintf(stderr, "Inclination: File descriptor error\n");
+        return false;
+    }
+    
+
     return true;
 }
 void Task::updateHook()
 {
     TaskBase::updateHook();
+    RTT::extras::FileDescriptorActivity* activity = getActivity<RTT::extras::FileDescriptorActivity>();
+
+
+    if(activity)
+    {
+        if(activity->hasError())
+        {
+            fprintf(stderr, "Inclination: IO error\n");
+        }
+        
+        if(activity->hasTimeout())
+        {
+            fprintf(stderr, "Inclination: Timeout\n");
+        }
+    }
+    else
+    {
+        fprintf(stderr, "Inclination: No RTT activity\n");
+        return;
+    }
+
+
+    // Building Message
+    float inclinations[2];
+    if(!driver->update(inclinations))
+    {
+        fprintf(stderr, "Inclination: Error reading device\n");
+    }
+    else
+    {
+        inclinometer_solar2::Inclinations inclintation_msg;
+        inclintation_msg.time = base::Time::now();
+
+        inclintation_msg.x = inclinations[0];
+        inclintation_msg.y = inclinations[1];
+        _inclinations.write(inclintation_msg);
+    
+    }
+
+
 }
 void Task::errorHook()
 {
@@ -47,6 +116,11 @@ void Task::errorHook()
 void Task::stopHook()
 {
     TaskBase::stopHook();
+
+     RTT::extras::FileDescriptorActivity* activity =
+        getActivity<RTT::extras::FileDescriptorActivity>();
+    if (activity)
+        activity->clearAllWatches();
 }
 void Task::cleanupHook()
 {
