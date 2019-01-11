@@ -34,12 +34,16 @@ bool Task::configureHook()
 
     driver = new inclinometer_solar2::Solar2();
 
+
+    driver->activatePrinting();
+
     if(!driver->openSerial(_port.value(), _baudrate.value()))
-    // if(!driver->openSerial("/dev/ttyUSB0", 38400))
     {
         fprintf(stderr, "Inclination: Cannot initialize driver\n");
         return false;
     }
+
+    driver->setRate(_rate.value());
 
     return true;
 }

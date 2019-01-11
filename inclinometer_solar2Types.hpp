@@ -14,4 +14,3 @@ namespace inclinometer_solar2 {
 }
 
 #endif
-
