@@ -39,7 +39,7 @@ task_context "Task" do
     #******************************
     #******* Output Ports *********
     #******************************
-    output_port('inclinations', '/inclinometer_solar2/Inclinations').
+    output_port('inclinations_out', '/inclinometer_solar2/Inclinations').
         doc 'Timestamped inclination data'
 
     fd_driven

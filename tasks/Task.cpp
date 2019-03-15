@@ -45,10 +45,14 @@ bool Task::configureHook()
 
     driver->setRate(_rate.value());
 
+    printf("Inclination sensor initialized.\n");
+    
     return true;
 }
+
 bool Task::startHook()
 {
+
     if (! TaskBase::startHook())
         return false;
 
@@ -107,8 +111,8 @@ void Task::updateHook()
 
         inclintation_msg.inc[0] = inclinations[0]*3.1415/180;
         inclintation_msg.inc[1] = inclinations[1]*3.1415/180;
-        inclinometer_msg.inc[2] = 0;
-        _inclinations.write(inclintation_msg);
+        inclintation_msg.inc[2] = 0;
+        _inclinations_out.write(inclintation_msg);
 
     }
 
