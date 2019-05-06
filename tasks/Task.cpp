@@ -45,10 +45,14 @@ bool Task::configureHook()
 
     driver->setRate(_rate.value());
 
+    printf("Inclination sensor initialized.\n");
+    
     return true;
 }
+
 bool Task::startHook()
 {
+
     if (! TaskBase::startHook())
         return false;
 
@@ -65,7 +69,7 @@ bool Task::startHook()
         fprintf(stderr, "Inclination: File descriptor error\n");
         return false;
     }
-    
+
 
     return true;
 }
@@ -81,7 +85,7 @@ void Task::updateHook()
         {
             fprintf(stderr, "Inclination: IO error\n");
         }
-        
+
         if(activity->hasTimeout())
         {
             fprintf(stderr, "Inclination: Timeout\n");
@@ -105,10 +109,11 @@ void Task::updateHook()
         inclinometer_solar2::Inclinations inclintation_msg;
         inclintation_msg.time = base::Time::now();
 
-        inclintation_msg.x = inclinations[0];
-        inclintation_msg.y = inclinations[1];
-        _inclinations.write(inclintation_msg);
-    
+        inclintation_msg.inc[0] = inclinations[0]*3.1415/180;
+        inclintation_msg.inc[1] = inclinations[1]*3.1415/180;
+        inclintation_msg.inc[2] = 0;
+        _inclinations_out.write(inclintation_msg);
+
     }
 
 

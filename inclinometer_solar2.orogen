@@ -19,11 +19,12 @@ task_context "Task" do
 
     # A configuration property (here, a std::string). Its value can be retrieved
     # in the C++ code with # _config_value.get() and _config_value.set(new_value).
-    
+
     #***************************
     #**** Driver Properties ****
     #***************************
-    property("port", "/std/string", "/dev/ttyUSB2").
+
+    property("port", "/std/string", "/dev/ttyS1").
         doc 'the device port'
 
     property('baudrate', 'int', 38400).
@@ -31,7 +32,7 @@ task_context "Task" do
 
     property('rate', 'int', 50).
         doc 'the rate in which the sensor sends messages in streaming mode in [ms]'
-    
+
     #******************************
     #******* Input ports  *********
     #******************************
@@ -39,10 +40,9 @@ task_context "Task" do
     #******************************
     #******* Output Ports *********
     #******************************
-    output_port('inclinations', '/inclinometer_solar2/Inclinations').
+    output_port('inclinations_out', '/inclinometer_solar2/Inclinations').
         doc 'Timestamped inclination data'
 
     fd_driven
 
 end
-
