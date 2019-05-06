@@ -23,7 +23,7 @@ task_context "Task" do
     #***************************
     #**** Driver Properties ****
     #***************************
-    property("port", "/std/string", "/dev/ttyUSB0").
+    property("port", "/std/string", "/dev/ttyUSB2").
         doc 'the device port'
 
     property('baudrate', 'int', 38400).
