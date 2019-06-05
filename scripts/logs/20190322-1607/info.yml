@@ -1,0 +1,7 @@
+---
+- time: 20190322-1607
+  cmdline: "/home/marta/rock/gui/vizkit/bin/rock-display "
+  robot_name: default
+  robot_type: default
+  app_name: scripts
+  app_dir: "/home/marta/rock/drivers/orogen/inclinometer_solar2/scripts"
