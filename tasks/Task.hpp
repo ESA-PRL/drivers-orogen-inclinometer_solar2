@@ -6,7 +6,7 @@
 #include "inclinometer_solar2/TaskBase.hpp"
 #include <inclinometer_solar2/Solar2.hpp>
 #include <rtt/extras/FileDescriptorActivity.hpp>
-
+#include <math.h>
 
 namespace inclinometer_solar2
 {
@@ -84,4 +84,3 @@ namespace inclinometer_solar2
 }
 
 #endif
-
