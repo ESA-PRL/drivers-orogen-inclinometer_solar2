@@ -109,8 +109,8 @@ void Task::updateHook()
         inclinometer_solar2::Inclinations inclintation_msg;
         inclintation_msg.time = base::Time::now();
 
-        inclintation_msg.inc[0] = inclinations[0]*M_PI/180;
-        inclintation_msg.inc[1] = inclinations[1]*M_PI/180;
+        inclintation_msg.inc[0] = inclinations[0];
+        inclintation_msg.inc[1] = inclinations[1];
         inclintation_msg.inc[2] = 0;
         _inclinations_out.write(inclintation_msg);
 

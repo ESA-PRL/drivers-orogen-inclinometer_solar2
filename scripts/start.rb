@@ -10,6 +10,7 @@ Orocos.initialize
 Orocos.run 'inclinometer_solar2::Task' => 'inclinometer_solar2' do
   ## Get the task context##
   driver = Orocos.name_service.get 'inclinometer_solar2'
+  driver.port = "/dev/ttyS1"
 
   ## Configure the task
   driver.configure
